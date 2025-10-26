@@ -75,7 +75,38 @@ class MeasurementController extends Controller
         unset($fields['items']);
         // Auto-derive measurement_type from first item type to satisfy DB enum
         if (empty($fields['measurement_type'])) {
-            $fields['measurement_type'] = $items[0]['item_type'] ?? 'Shirt';
+            $derived = $items[0]['item_type'] ?? null;
+            $validTypes = ['Shirt','Jersey','Coat Up','Coat Down','Uniform','PE Uniform Up','PE Uniform Down'];
+            $measurementType = 'Shirt';
+            if ($derived) {
+                if (in_array($derived, $validTypes)) {
+                    $measurementType = $derived;
+                } else {
+                    $d = strtolower($derived);
+                    if (strpos($d, 'jersey') !== false) {
+                        $measurementType = 'Jersey';
+                    } elseif (strpos($d, 'shirt') !== false) {
+                        $measurementType = 'Shirt';
+                    } elseif (strpos($d, 'coat') !== false) {
+                        // Decide Up or Down based on keyword
+                        if (strpos($d, 'down') !== false || strpos($d, 'pants') !== false) {
+                            $measurementType = 'Coat Down';
+                        } else {
+                            $measurementType = 'Coat Up';
+                        }
+                    } elseif (strpos($d, 'pe') !== false) {
+                        // PE Uniform variations
+                        if (strpos($d, 'down') !== false || strpos($d, 'pants') !== false) {
+                            $measurementType = 'PE Uniform Down';
+                        } else {
+                            $measurementType = 'PE Uniform Up';
+                        }
+                    } elseif (strpos($d, 'uniform') !== false) {
+                        $measurementType = 'Uniform';
+                    }
+                }
+            }
+            $fields['measurement_type'] = $measurementType;
         }
         
         $measurement = null;
@@ -157,7 +188,36 @@ class MeasurementController extends Controller
         $items = $fields['items'] ?? [];
         unset($fields['items']);
         if (empty($fields['measurement_type'])) {
-            $fields['measurement_type'] = $items[0]['item_type'] ?? $measurement->measurement_type ?? 'Shirt';
+            $derived = $items[0]['item_type'] ?? null;
+            $validTypes = ['Shirt','Jersey','Coat Up','Coat Down','Uniform','PE Uniform Up','PE Uniform Down'];
+            $measurementType = $measurement->measurement_type ?? 'Shirt';
+            if ($derived) {
+                if (in_array($derived, $validTypes)) {
+                    $measurementType = $derived;
+                } else {
+                    $d = strtolower($derived);
+                    if (strpos($d, 'jersey') !== false) {
+                        $measurementType = 'Jersey';
+                    } elseif (strpos($d, 'shirt') !== false) {
+                        $measurementType = 'Shirt';
+                    } elseif (strpos($d, 'coat') !== false) {
+                        if (strpos($d, 'down') !== false || strpos($d, 'pants') !== false) {
+                            $measurementType = 'Coat Down';
+                        } else {
+                            $measurementType = 'Coat Up';
+                        }
+                    } elseif (strpos($d, 'pe') !== false) {
+                        if (strpos($d, 'down') !== false || strpos($d, 'pants') !== false) {
+                            $measurementType = 'PE Uniform Down';
+                        } else {
+                            $measurementType = 'PE Uniform Up';
+                        }
+                    } elseif (strpos($d, 'uniform') !== false) {
+                        $measurementType = 'Uniform';
+                    }
+                }
+            }
+            $fields['measurement_type'] = $measurementType;
         }
         \DB::transaction(function () use ($measurement, $fields, $items) {
             $measurement->update($fields);

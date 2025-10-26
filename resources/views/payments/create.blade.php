@@ -79,8 +79,6 @@
                                 <option value="">Select Payment Method</option>
                                 <option value="Cash" {{ old('payment_method') == 'Cash' ? 'selected' : '' }}>Cash</option>
                                 <option value="GCash" {{ old('payment_method') == 'GCash' ? 'selected' : '' }}>GCash</option>
-                                <option value="Bank Transfer" {{ old('payment_method') == 'Bank Transfer' ? 'selected' : '' }}>Bank Transfer</option>
-                                <option value="Check" {{ old('payment_method') == 'Check' ? 'selected' : '' }}>Check</option>
                             </select>
                             @error('payment_method')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -106,7 +104,7 @@
                             @error('reference_number')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Optional: Receipt number, transaction ID, or check number</div>
+                            <div class="form-text">Optional: Receipt number, transaction ID</div>
                         </div>
                     </div>
                 </div>
