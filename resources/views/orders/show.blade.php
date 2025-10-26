@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-bold">Total Amount</label>
-                            <p class="mb-0 h5 text-success">₱{{ number_format($order->total_amount, 2) }}</p>
+                            <p class="mb-0 h5 text-success">₱{{ number_format($order->measurement->items->sum('total_price'), 2) }}</p>
                         </div>
                         @if($order->balance > 0)
                         <div class="col-12">
@@ -254,7 +254,7 @@
                                 <tfoot>
                                     <tr class="table-success">
                                         <th colspan="3">Total Amount</th>
-                                        <th class="h5">₱{{ number_format($order->total_amount, 2) }}</th>
+                                        <th class="h5">₱{{ number_format($order->measurement->items->sum('total_price'), 2) }}</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>

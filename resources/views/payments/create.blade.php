@@ -44,8 +44,8 @@
                                 <option value="">Select Customer Order</option>
                                 @foreach($orders as $order)
                                     <option value="{{ $order->id }}" 
-                                            data-balance="{{ $order->balance }}"
-                                            data-total="{{ $order->total_amount }}"
+                                            data-balance="{{ $order->measurement->items->sum('total_price') - $order->amount_paid }}"
+                                            data-total="{{ $order->measurement->items->sum('total_price') }}"
                                             data-paid="{{ $order->amount_paid }}"
                                             {{ $selectedOrderId == $order->id ? 'selected' : '' }}>
                                         {{ $order->customer->first_name }} {{ $order->customer->last_name }} 

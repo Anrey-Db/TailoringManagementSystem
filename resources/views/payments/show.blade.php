@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-body">
             <p><strong>Order ID:</strong> {{ $payment->order_id }}</p>
-            <p><strong>Amount:</strong> ₱{{ number_format($payment->amount, 2) }}</p>
+            <p><strong>Amount:</strong> ₱{{ number_format($payment->amount_paid, 2) }}</p>
             <p><strong>Payment Method:</strong> {{ ucfirst($payment->payment_method) }}</p>
             <p><strong>Payment Date:</strong> {{ $payment->payment_date }}</p>
         </div>

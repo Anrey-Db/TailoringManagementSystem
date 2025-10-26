@@ -15,7 +15,7 @@ class MeasurementController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Measurement::with('customer');
+        $query = Measurement::with(['customer', 'items.units']);
 
         // Search functionality
         if ($request->filled('search')) {

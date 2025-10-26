@@ -189,7 +189,7 @@
                                     <span class="badge bg-{{ $paymentClass }}">{{ $order->payment_status }}</span>
                                 </td>
                                 <td>
-                                    <div class="fw-bold">₱{{ number_format($order->total_amount, 2) }}</div>
+                                    <div class="fw-bold">₱{{ number_format($order->measurement->items->sum('total_price'), 2) }}</div>
                                     @if($order->balance > 0)
                                         <small class="text-danger">Balance: ₱{{ number_format($order->balance, 2) }}</small>
                                     @endif

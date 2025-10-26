@@ -121,7 +121,7 @@
                                             @endphp
                                             <span class="badge bg-{{ $statusClass }}">{{ $order->status }}</span>
                                         </td>
-                                        <td>₱{{ number_format($order->total_amount, 2) }}</td>
+                                            <td>₱{{ number_format(optional($order->measurement)->items->sum('total_price') ?? 0, 2) }}</td>
                                         <td>{{ $order->order_date->format('M d, Y') }}</td>
                                     </tr>
                                     @endforeach

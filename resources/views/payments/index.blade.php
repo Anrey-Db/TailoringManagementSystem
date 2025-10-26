@@ -122,7 +122,7 @@
                                         {{ $payment->order->order_number }}
                                     </a>
                                     <div class="small text-muted">
-                                        Total: ₱{{ number_format($payment->order->total_amount, 2) }}
+                                        Total: ₱{{ number_format($payment->order->measurement->items->sum('total_price'), 2) }}
                                     </div>
                                 </td>
                                 <td>

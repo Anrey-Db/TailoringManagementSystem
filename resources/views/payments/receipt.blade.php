@@ -35,9 +35,12 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         .info-section {
             flex: 1;
+            min-width: 250px;
+            margin-right: 20px;
         }
         .info-label {
             font-weight: bold;
@@ -80,6 +83,24 @@
         .status-completed { background-color: #d4edda; color: #155724; }
         .status-pending { background-color: #fff3cd; color: #856404; }
         .status-refunded { background-color: #f8d7da; color: #721c24; }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn + .btn {
+            margin-left: 10px;
+        }
         @media print {
             body { margin: 0; }
             .no-print { display: none; }
@@ -142,7 +163,7 @@
         <h4>Order Details</h4>
         <div class="row">
             <div class="col-6">
-                <strong>Order Total:</strong> ₱{{ number_format($payment->order->total_amount, 2) }}
+                <strong>Order Total:</strong> ₱{{ number_format($payment->order->measurement->items->sum('total_price'), 2) }}
             </div>
             <div class="col-6">
                 <strong>Amount Paid:</strong> ₱{{ number_format($payment->order->amount_paid, 2) }}
@@ -150,7 +171,11 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <strong>Outstanding Balance:</strong> ₱{{ number_format($payment->order->balance, 2) }}
+                @php
+                    $orderTotal = $payment->order->measurement->items->sum('total_price');
+                    $balance = $orderTotal - $payment->order->amount_paid;
+                @endphp
+                <strong>Outstanding Balance:</strong> ₱{{ number_format($balance, 2) }}
             </div>
             <div class="col-6">
                 <strong>Payment Status:</strong> {{ $payment->order->payment_status }}
@@ -189,9 +214,8 @@
         <p>Thank you for your payment!</p>
         <p>Generated on {{ now()->format('F d, Y \a\t g:i A') }}</p>
         <p class="no-print">
-            <button onclick="window.print()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Print Receipt
-            </button>
+            <button onclick="window.print()" class="btn btn-primary">Print Receipt</button>
+            <button onclick="window.location.href='{{ url()->previous() }}'" class="btn btn-secondary">Back to Website</button>
         </p>
     </div>
 

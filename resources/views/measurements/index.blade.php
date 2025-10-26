@@ -124,52 +124,46 @@
                                 <td>
                                     @php
                                         $keyMeasurements = [];
-                                        switch($measurement->measurement_type) {
-                                            case 'Shirt':
-                                                if($measurement->shirt_chest) $keyMeasurements[] = 'Chest: ' . $measurement->shirt_chest;
-                                                if($measurement->shirt_waist) $keyMeasurements[] = 'Waist: ' . $measurement->shirt_waist;
-                                                if($measurement->shirt_length) $keyMeasurements[] = 'Length: ' . $measurement->shirt_length;
-                                                break;
-                                            case 'Jersey':
-                                                if($measurement->jersey_chest) $keyMeasurements[] = 'Chest: ' . $measurement->jersey_chest;
-                                                if($measurement->jersey_waist) $keyMeasurements[] = 'Waist: ' . $measurement->jersey_waist;
-                                                if($measurement->jersey_length) $keyMeasurements[] = 'Length: ' . $measurement->jersey_length;
-                                                break;
-                                            case 'Coat Up':
-                                                if($measurement->coat_body) $keyMeasurements[] = 'Body: ' . $measurement->coat_body;
-                                                if($measurement->coat_waist) $keyMeasurements[] = 'Waist: ' . $measurement->coat_waist;
-                                                if($measurement->coat_length) $keyMeasurements[] = 'Length: ' . $measurement->coat_length;
-                                                break;
-                                            case 'Coat Down':
-                                                if($measurement->coat_pants_waist) $keyMeasurements[] = 'Waist: ' . $measurement->coat_pants_waist;
-                                                if($measurement->coat_pants_hip) $keyMeasurements[] = 'Hip: ' . $measurement->coat_pants_hip;
-                                                if($measurement->coat_pants_length) $keyMeasurements[] = 'Length: ' . $measurement->coat_pants_length;
-                                                break;
-                                            case 'Uniform':
-                                                if($measurement->uniform_chest) $keyMeasurements[] = 'Chest: ' . $measurement->uniform_chest;
-                                                if($measurement->uniform_waist) $keyMeasurements[] = 'Waist: ' . $measurement->uniform_waist;
-                                                if($measurement->uniform_length) $keyMeasurements[] = 'Length: ' . $measurement->uniform_length;
-                                                break;
-                                            case 'PE Uniform Up':
-                                                if($measurement->pe_chest) $keyMeasurements[] = 'Chest: ' . $measurement->pe_chest;
-                                                if($measurement->pe_waist) $keyMeasurements[] = 'Waist: ' . $measurement->pe_waist;
-                                                if($measurement->pe_length) $keyMeasurements[] = 'Length: ' . $measurement->pe_length;
-                                                break;
-                                            case 'PE Uniform Down':
-                                                if($measurement->pe_pants_waist) $keyMeasurements[] = 'Waist: ' . $measurement->pe_pants_waist;
-                                                if($measurement->pe_pants_hip) $keyMeasurements[] = 'Hip: ' . $measurement->pe_pants_hip;
-                                                if($measurement->pe_pants_length) $keyMeasurements[] = 'Length: ' . $measurement->pe_pants_length;
-                                                break;
+                                        // Get the first item and its units
+                                        $firstItem = $measurement->items->first();
+                                        if($firstItem && $firstItem->units->count() > 0) {
+                                            $firstUnit = $firstItem->units->first();
+                                            
+                                            // Add person name if available
+                                            if($firstUnit->person_name) {
+                                                $keyMeasurements[] = 'Person: ' . $firstUnit->person_name;
+                                            }
+                                            
+                                            // Get the size label if available
+                                            if($firstUnit->size_label) {
+                                                $keyMeasurements[] = 'Size: ' . $firstUnit->size_label;
+                                            }
+                                            
+                                            // Add the essential measurements
+                                            if($firstUnit->chest) {
+                                                $keyMeasurements[] = 'Chest: ' . $firstUnit->chest;
+                                            }
+                                            if($firstUnit->waist) {
+                                                $keyMeasurements[] = 'Waist: ' . $firstUnit->waist;
+                                            }
+                                            if($firstUnit->hip) {
+                                                $keyMeasurements[] = 'Hip: ' . $firstUnit->hip;
+                                            }
+                                            if($firstUnit->length) {
+                                                $keyMeasurements[] = 'Length: ' . $firstUnit->length;
+                                            }
+                                            
+                                            // Show count if there are multiple units
+                                            if($firstItem->units->count() > 1) {
+                                                $keyMeasurements[] = '+'.($firstItem->units->count() - 1).' more persons';
+                                            }
                                         }
                                     @endphp
                                     @if(count($keyMeasurements) > 0)
                                         <div class="small">
-                                            @foreach(array_slice($keyMeasurements, 0, 2) as $measure)
+                                            @foreach($keyMeasurements as $measure)
                                                 <div>{{ $measure }}</div>
                                             @endforeach
-                                            @if(count($keyMeasurements) > 2)
-                                                <div class="text-muted">+{{ count($keyMeasurements) - 2 }} more</div>
-                                            @endif
                                         </div>
                                     @else
                                         <span class="text-muted">No measurements recorded</span>

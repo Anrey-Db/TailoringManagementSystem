@@ -110,12 +110,7 @@
             @endforeach
         </div>
         <button type="button" class="btn btn-outline-primary mb-3" id="m_add_item_btn">+ Add Item</button>
-
-        <div class="mb-3"><label>Chest</label><input type="number" step="0.01" name="chest" class="form-control" value="{{ $measurement->chest }}"></div>
-        <div class="mb-3"><label>Waist</label><input type="number" step="0.01" name="waist" class="form-control" value="{{ $measurement->waist }}"></div>
-        <div class="mb-3"><label>Hip</label><input type="number" step="0.01" name="hip" class="form-control" value="{{ $measurement->hip }}"></div>
-        <div class="mb-3"><label>Length</label><input type="number" step="0.01" name="length" class="form-control" value="{{ $measurement->length }}"></div>
-
+        <hr>
         <button type="submit" class="btn btn-primary">Update</button>
         <a href="{{ route('measurements.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
