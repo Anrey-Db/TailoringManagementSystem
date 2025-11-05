@@ -94,6 +94,18 @@
             font-weight: bold;
             color: #333;
         }
+        .balance-due {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #dc3545;
+        }
+        .balance-amount {
+            color: #dc3545;
+            font-size: 20px;
+        }
+        .paid-amount {
+            color: #28a745;
+        }
         .footer {
             margin-top: 40px;
             text-align: center;
@@ -233,10 +245,17 @@
             <span class="total-label">Amount Paid:</span>
             <span>₱{{ number_format($order->amount_paid, 2) }}</span>
         </div>
+        @if($order->balance > 0)
+        <div class="total-row balance-due">
+            <span class="total-label">Balance Due:</span>
+            <span class="total-amount balance-amount">₱{{ number_format($order->balance, 2) }}</span>
+        </div>
+        @else
         <div class="total-row">
             <span class="total-label">Balance:</span>
-            <span class="total-amount">₱{{ number_format($order->balance, 2) }}</span>
+            <span class="total-amount paid-amount">₱{{ number_format($order->balance, 2) }}</span>
         </div>
+        @endif
     </div>
 
     @if($order->payments->count() > 0)
