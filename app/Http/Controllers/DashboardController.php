@@ -23,17 +23,22 @@ class DashboardController extends Controller
         $totalMeasurements = Measurement::count();
 
         // Get recent orders
-        $recentOrders = Order::with('customer')
+        $recentOrders = Order::with(['customer', 'measurement.items'])
             ->latest()
             ->take(5)
             ->get();
 
-        // Get pending payments (orders with balance > 0)
-        $pendingPayments = Order::with('customer')
-            ->where('balance', '>', 0)
+        // Get pending payments (orders with outstanding balance)
+        $pendingPayments = Order::with(['customer', 'measurement.items'])
+            ->whereHas('measurement.items')
             ->latest()
+            ->get()
+            ->filter(function($order) {
+                $total = $order->measurement->items->sum('total_price');
+                return ($total - $order->amount_paid) > 0;
+            })
             ->take(5)
-            ->get();
+            ->values();
 
         // Get order status counts
         $orderStatusCounts = Order::select('status', DB::raw('count(*) as count'))
@@ -59,7 +64,14 @@ class DashboardController extends Controller
 
         // Get total revenue
         $totalRevenue = Payment::sum('amount_paid');
-        $totalOutstanding = Order::sum('balance');
+        
+        // Calculate total outstanding by summing the difference between order totals and amounts paid
+        $totalOutstanding = Order::with('measurement.items')
+            ->get()
+            ->sum(function($order) {
+                $total = $order->measurement->items->sum('total_price');
+                return max(0, $total - $order->amount_paid);
+            });
 
         return view('dashboard.index', compact(
             'totalCustomers',
