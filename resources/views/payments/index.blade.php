@@ -168,7 +168,9 @@
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('payments.receipt', $payment) }}" 
-                                           class="btn btn-sm btn-outline-success" title="Print Receipt">
+                                           class="btn btn-sm btn-outline-success" 
+                                           title="Print Receipt"
+                                           target="_blank">
                                             <i class="fas fa-receipt"></i>
                                         </a>
                                         <a href="{{ route('payments.edit', $payment) }}" 
