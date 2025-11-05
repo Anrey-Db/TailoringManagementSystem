@@ -52,7 +52,7 @@
                             <p class="card-text">Total Revenue</p>
                         </div>
                         <div class="align-self-center">
-                            <i class="fas fa-dollar-sign fa-2x"></i>
+                            <span class="h2 mb-0">₱</span>
                         </div>
                     </div>
                 </div>
