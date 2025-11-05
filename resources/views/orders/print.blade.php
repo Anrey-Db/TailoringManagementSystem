@@ -94,6 +94,18 @@
             font-weight: bold;
             color: #333;
         }
+            .total-label-value {
+                font-weight: bold;
+                color: #333;
+            }
+            .paid-status {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 2px solid #28a745;
+                background-color: #f8fff8;
+                padding: 8px;
+                border-radius: 4px;
+            }
         .balance-due {
             margin-top: 10px;
             padding-top: 10px;
