@@ -9,3 +9,40 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Compact styles for customer form */
+.page-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.customer-form {
+    margin-top: 0.5rem;
+}
+
+.customer-form .form-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.customer-form .form-control {
+    padding: 0.42rem 0.65rem;
+    font-size: 0.95rem;
+    height: auto;
+}
+
+.customer-form textarea.form-control {
+    min-height: 3.4rem;
+}
+
+.customer-form .btn {
+    padding: 0.38rem 0.7rem;
+    font-size: 0.95rem;
+}
+
+/* Slightly reduce left/right spacing inside form columns */
+.customer-form .row > [class*="col-"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}

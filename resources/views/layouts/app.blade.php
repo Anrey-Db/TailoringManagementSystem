@@ -32,7 +32,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 fixed-top">
     <div class="container-fluid">
       <!-- Left side: Brand -->
       <a class="navbar-brand fw-bold ms-4" href="{{ route('dashboard.index') }}">
@@ -75,7 +75,8 @@
         </ul>
       </div>
     </div>
-  </nav>
+</nav>
+
 
   <main>
     @yield('content')
