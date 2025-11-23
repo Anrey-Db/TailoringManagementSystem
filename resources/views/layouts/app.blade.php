@@ -72,13 +72,30 @@
               <i class="fas fa-credit-card me-1"></i>Payments
             </a>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i>{{ Auth::user()->name }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><span class="dropdown-item-text"><small>{{ Auth::user()->email }}</small></span></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                  @csrf
+                  <button type="submit" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
 </nav>
 
 
-  <main>
+  <main style="padding-top:80px;">
     @yield('content')
   </main>
 

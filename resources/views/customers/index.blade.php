@@ -72,7 +72,7 @@
     <!-- Customers Table -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
+            <h5 class="mb-0 d-flex align-items-center">
                 <i class="fas fa-list me-2"></i>Customers List
                 <span class="badge bg-primary ms-2">{{ $customers->total() }}</span>
             </h5>

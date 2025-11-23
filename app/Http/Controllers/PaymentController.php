@@ -100,16 +100,20 @@ class PaymentController extends Controller
             // Update order payment status
             $order = Order::findOrFail($validated['order_id']);
             $totalPaid = $order->payments()->sum('amount_paid');
-            $balance = $order->total_amount - $totalPaid;
-            
+
+            // Calculate actual order total from items (in case total_amount field is not up-to-date)
+            $totalAmount = $order->calculateTotalAmount();
+            $balance = $totalAmount - $totalPaid;
+
             // Update order payment status and balance
             $paymentStatus = 'Partial';
             if ($balance <= 0) {
                 $paymentStatus = 'Paid';
                 $balance = 0;
             }
-            
+
             $order->update([
+                'total_amount' => $totalAmount,
                 'amount_paid' => $totalPaid,
                 'balance' => $balance,
                 'payment_status' => $paymentStatus,
@@ -163,16 +167,20 @@ class PaymentController extends Controller
             // Update order payment status
             $order = Order::findOrFail($validated['order_id']);
             $totalPaid = $order->payments()->sum('amount_paid');
-            $balance = $order->total_amount - $totalPaid;
-            
+
+            // Calculate actual order total from items (in case total_amount field is not up-to-date)
+            $totalAmount = $order->calculateTotalAmount();
+            $balance = $totalAmount - $totalPaid;
+
             // Update order payment status and balance
             $paymentStatus = 'Partial';
             if ($balance <= 0) {
                 $paymentStatus = 'Paid';
                 $balance = 0;
             }
-            
+
             $order->update([
+                'total_amount' => $totalAmount,
                 'amount_paid' => $totalPaid,
                 'balance' => $balance,
                 'payment_status' => $paymentStatus,
@@ -191,17 +199,21 @@ class PaymentController extends Controller
         DB::transaction(function () use ($payment) {
             $order = $payment->order;
             $payment->delete();
-            
+
             // Recalculate order payment status
             $totalPaid = $order->payments()->sum('amount_paid');
-            $balance = $order->total_amount - $totalPaid;
-            
+
+            // Use calculated total amount to avoid stale total_amount field
+            $totalAmount = $order->calculateTotalAmount();
+            $balance = $totalAmount - $totalPaid;
+
             $paymentStatus = 'Unpaid';
             if ($totalPaid > 0) {
                 $paymentStatus = $balance > 0 ? 'Partial' : 'Paid';
             }
-            
+
             $order->update([
+                'total_amount' => $totalAmount,
                 'amount_paid' => $totalPaid,
                 'balance' => $balance,
                 'payment_status' => $paymentStatus,

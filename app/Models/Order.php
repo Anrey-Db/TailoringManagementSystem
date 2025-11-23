@@ -55,7 +55,18 @@ class Order extends Model
     // Calculate total amount from order items
     public function calculateTotalAmount()
     {
-        return $this->orderItems()->sum('total_price');
+        $orderItemsTotal = (float) $this->orderItems()->sum('total_price');
+
+        if ($orderItemsTotal > 0) {
+            return $orderItemsTotal;
+        }
+
+        // Fallback: if order items are not present, sum measurement items
+        if ($this->measurement) {
+            return (float) $this->measurement->items()->sum('total_price');
+        }
+
+        return 0;
     }
 
     // Update order totals when items change
